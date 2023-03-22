@@ -56,14 +56,38 @@ void LeastSquareFitting::polynomialFit(const std::vector<double>& indices, const
 	}
 	report.isSuccessful = true;
 
+	// Evaluate the polynomial on the indices
+	polinomialEvaluation(indices, report);
 
+	// Extract the statistics
+	int n = indices.size();
+	double diff = 0.0;
+	double maxDiff = 0.0;
+	for (size_t i = 0; i < n; i++)
+	{
+		diff = values[i] - report.evaluatedValues[i];
+		report.meanError += std::abs(diff);
+		report.standardDeviation += diff * diff;
+		if (maxDiff < std::abs(diff))
+		{
+			maxDiff = std::abs(diff);
+		}
+	}
+
+	report.meanError /= n;
+	report.standardDeviation = std::sqrt(report.standardDeviation / n);
+	report.maximumError = maxDiff;
 }
 
 void LeastSquareFitting::polinomialEvaluation(const std::vector<double>& indices, polyFitReport& report)
 {
-	Eigen::VectorXd t(indices.data());
-	Eigen::VectorXd V;
-	V.resize(t.size());
+	Eigen::ArrayXd t;
+	t.resize(indices.size());
+	for (size_t i = 0; i < indices.size(); i++)
+	{
+		t[i] = indices[i];
+	}
+	Eigen::ArrayXd V = Eigen::ArrayXd::Zero(t.size());
 	
 	// Evaluate polynomial's value at "indices"
 	for (size_t i = 0; i < report.coefficients.size(); i++)

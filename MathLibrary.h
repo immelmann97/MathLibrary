@@ -1,8 +1,10 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
 #include <Eigen/Core>
 #include <Eigen/QR>
+#include <Eigen/Dense>
 
 class LeastSquareFitting
 {
@@ -23,6 +25,7 @@ public:
 		polyFitReport& report,
 		const size_t order);
 
+	// Evaluate the polynomial's information contained in "report", whether they come from polynomialFit or are user generated, and updates "report"'s field estimatedValues with the result.
 	void polinomialEvaluation(const std::vector<double>& indices, polyFitReport& report);
 };
 
