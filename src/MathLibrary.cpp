@@ -79,6 +79,7 @@ void LeastSquareFitting::polynomialFit(const std::vector<double>& indices, const
 	report.maximumError = maxDiff;
 }
 
+
 void LeastSquareFitting::polinomialEvaluation(const std::vector<double>& indices, polyFitReport& report)
 {
 	Eigen::ArrayXd t;
